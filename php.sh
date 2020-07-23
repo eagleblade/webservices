@@ -1,6 +1,6 @@
 #!/bin/bash
 source ./.env
-WORKING_DIR=./$REPOSITORY_NAME
+WORKING_DIR=./$COMPOSE_PROJECT_NAME
 
 if [ -f "$WORKING_DIR/$PHP_CONF_FILE" ]; then
     cp /dev/null $WORKING_DIR/$PHP_CONF_FILE
