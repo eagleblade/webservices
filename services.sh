@@ -24,10 +24,18 @@ services:
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf:cached
         working_dir: $APP_PATH
         networks: 
-            - $NETBACK
             - $PROXYNET
+            - $NETBACK
         depends_on:
             - $DOMAIN-php
+        labels:
+            - traefik.http.routers.$TRAEFIK_LABELS.rule=Host(\`$DOMAIN\`)
+            - traefik.enable=true
+            - traefik.http.middlewares.$TRAEFIK_LABELS-redirectscheme.redirectscheme.scheme=https
+            - traefik.http.middlewares.$TRAEFIK_LABELS-redirectscheme.redirectscheme.permanent=true
+            - traefik.http.routers.$TRAEFIK_LABELS.middlewares=$TRAEFIK_LABELS-redirectscheme
+            - traefik.http.routers.$TRAEFIK_LABELS.tls=true
+            - traefik.docker.network=$PROXYNET
     $DOMAIN-php:
         env_file: $ENV_PHP_CONFIG_FILE
         image: $REPOSITORY_NAME/php:$IMAGE_TAG
