@@ -8,7 +8,7 @@ echo "    $2_$1:"
 echo "      container_name: $2_$1"
 echo "      hostname: $2_$1"
 echo "      env_file: .$1.env"
-echo "      image: $3/$1:$4"
+echo "      image: docker.pkg.github.com/eagleblade/webservices/$1:latest"
 echo -n "      volumes:
         - /home/$USER/www/$2:/app"
 if [ $1 == "nginx" ]
