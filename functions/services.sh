@@ -19,7 +19,7 @@ echo "
       labels:
         - traefik.http.routers.$5.rule=Host(\`$2\`)
         - traefik.enable=true"
-if [ $6 == "True" ]
+if [ $6  "True" ]
 then
 echo "        - traefik.http.middlewares.$5-redirectscheme.redirectscheme.scheme=https
         - traefik.http.middlewares.$5-redirectscheme.redirectscheme.permanent=true
