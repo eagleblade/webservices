@@ -1,5 +1,6 @@
 FROM php:7.4.7-fpm-alpine3.12
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN wget https://get.symfony.com/cli/installer -O - | bash
 ENV UID=1000
 ENV GID=1000
 ENV USER=debian
