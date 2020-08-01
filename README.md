@@ -34,9 +34,9 @@ It's importain't that you atleast change the **TLD** and the **DOMAIN_NAME**
     IMAGE_NAME="baro"
     IMAGE_VERSION="latest"
     DOMAIN_NAME="test"
-    TDL="com"
+    TLD="com"
     ENABLE_TLS="False" #True to enable SSL
-Change **PROJECT_NAME**, **DOMAIN_NAME** and **TDL**. The rest should be left as default.
+Change **PROJECT_NAME**, **DOMAIN_NAME** and **TLD**. The rest should be left as default.
 if your domain name is bobisthegreatest.com then the .env file should look something like this
 
     PROJECT_NAME="bob"
@@ -44,7 +44,7 @@ if your domain name is bobisthegreatest.com then the .env file should look somet
     IMAGE_NAME="baro"
     IMAGE_VERSION="latest"
     DOMAIN_NAME="bobisthegreatest"
-    TDL="com"
+    TLD="com"
     ENABLE_TLS="False" #True to enable SSL
 
 *The script will add labels for [traefik](https://docs.traefik.io/)*
