@@ -17,15 +17,15 @@ echo "
         - ./nginx/app.conf:/etc/nginx/conf.d/default.conf:cached
         - ./nginx/nginx.conf:/etc/nginx/nginx.conf:cached
       labels:
-        - traefik.http.routers.$5.rule=Host(\`$2\`)
+        - traefik.http.routers.$TRAEFIK_LABELS.rule=Host(\`$2\`)
         - traefik.enable=true"
 if [ $6  "True" ]
 then
-echo "        - traefik.http.middlewares.$5-redirectscheme.redirectscheme.scheme=https
-        - traefik.http.middlewares.$5-redirectscheme.redirectscheme.permanent=true
-        - traefik.http.routers.$5.middlewares=$5-redirectscheme
-        - traefik.http.routers.$5.tls.certresolver=cert
-        - traefik.http.routers.$5.tls=True"
+echo "        - traefik.http.middlewares.$TRAEFIK_LABELS-redirectscheme.redirectscheme.scheme=https
+        - traefik.http.middlewares.$TRAEFIK_LABELS-redirectscheme.redirectscheme.permanent=true
+        - traefik.http.routers.$TRAEFIK_LABELS.middlewares=$TRAEFIK_LABELS-redirectscheme
+        - traefik.http.routers.$TRAEFIK_LABELS.tls.certresolver=cert
+        - traefik.http.routers.$TRAEFIK_LABELS.tls=True"
 fi
 echo "        - traefik.docker.network=proxy
       networks: 
