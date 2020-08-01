@@ -3,8 +3,8 @@
 #import ENVS
 source .env
 
-DOMAIN_NAME_FULL="$DOMAIN_NAME.$TDL" 
-TRAEFIK_LABELS="$DOMAIN_NAME"_"$TDL"
+DOMAIN_NAME_FULL="$DOMAIN_NAME.$TLD" 
+TRAEFIK_LABELS="$DOMAIN_NAME"_"$TLD"
 
 # import functions 
 #Imports all scripts from the ./function folder and source them into the script
