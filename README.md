@@ -1,50 +1,78 @@
+
 # Baro Webstack!
-*For Linux only, if you want to run this on windows your on your own *
 
-Contains a series of bash scripts, that creates all necessary files for running a NGINX docker container, that proxy PHP scripts to an PHP docker container.
-
-The ./setup.sh will automatically create:
-
- - docker-compose.yaml
- - nginx/app.conf
- - nginx/nginx.conf
- - php/www.conf
- - .php.env
- - .nginx.env
-
-and configure them according to the vars in your .env file. 
-
-*The docker-compose file will use the baro web images, I will at a later moment publish these to git. so you can build your own images, or build from them.*
-
-# Web Files
-The www files, will be stored in /home/USERNAME/www/DOMAIN/.
-
-    /home/$USER/www/$DOMAIN
   
-This will be edited automatically by the script, and will reflect your preferences. So if your system username is bob, and your domain name are bobisthegreatest.com then the path for the web files will be 
 
-    /home/bob/www/bobisthegreatest.com/
+# Installation
+    ./setup.sh -f ~/docker
+For more options run
 
-If you want to change this, then edit the docker-compose.yaml file, according to your preferences. Keep in mind that you have to edit both the NGINX and PHP container, or else you will have some issues.
-The scripts will not create web files, or touch them! So you have to create them manually before you run the `docker-compose up -d command.`
+    ./setup.sh -h
 
+The script will by default create the following files and folders.
 
-# Docker files
-All the necessary server files, as well as the docker-compose.yaml for running both NGINX and PHP will be created in a sub folder named after the `$COMPOSE_PROJECT_NAME` default: `./test_project/` so if you want to create multiply docker containers for different domains, just change the values for project name and domain, and run the scripts again
+    /home/$USER/docker/test/
+						    ./.nginx.env
+						    ./.php.env
+						    ./docker-compose.yaml
+						    ./nginx
+							    ./app.conf
+							    ./nginx.conf
+						    ./php
+							    ./www.conf
 
-# installation
-get the newest files
+The default location for web-files will be 
 
-    git clone https://github.com/eagleblade/webservices.git
+    /home/$USER/www/test.com
 
-Edit the .env file first, change the 
-  
-	$COMPOSE_PROJECT_NAME
-    $DOMAIN
-    
- The rest can be left as default. 
+If you want to change this, just edit the docker-compose file. **(google will show you how!)**
 
-    chmod +x *.sh
-    ./setup.sh
-this will create all the files in a sub-folder, go into this sub-folder and run docker-compose up -d
-*By default the ports are not open, these have to be proxyed or opened manually in the docker-compose file. I use Traefik for proxy, and will add automatically configuration of traefik using file or labels at a later moment*
+It's importain't that you atleast change the **TLD** and the **DOMAIN_NAME**
+
+    PROJECT_NAME="test"
+    COMPOSE_VERSION="3.8"
+    IMAGE_NAME="baro"
+    IMAGE_VERSION="latest"
+    DOMAIN_NAME="test"
+    TDL="com"
+    ENABLE_TLS="False" #True to enable SSL
+Change **PROJECT_NAME**, **DOMAIN_NAME** and **TDL**. The rest should be left as default.
+if your domain name is bobisthegreatest.com then the .env file should look something like this
+
+    PROJECT_NAME="bob"
+    COMPOSE_VERSION="3.8"
+    IMAGE_NAME="baro"
+    IMAGE_VERSION="latest"
+    DOMAIN_NAME="bobisthegreatest"
+    TDL="com"
+    ENABLE_TLS="False" #True to enable SSL
+
+*The script will add labels for [traefik](https://docs.traefik.io/)*
+
+**these labels are:**
+
+    - traefik.http.routers.com.rule=Host(`test.com`)
+    - traefik.enable=true
+    - traefik.docker.network=proxy
+
+**if you change ENABLE_TLS to True the script will also add**
+
+    - traefik.http.middlewares.com-redirectscheme.redirectscheme.scheme=https
+    - traefik.http.middlewares.com-redirectscheme.redirectscheme.permanent=true
+    - traefik.http.routers.com.middlewares=com-redirectscheme
+    - traefik.http.routers.com.tls.certresolver=cert
+    - traefik.http.routers.com.tls=true
+
+**Add this to your traefik.toml to get the certs to work!**
+*More info about this can be found [here](https://docs.traefik.io/https/acme/)*
+
+    [certificatesResolvers.cert.acme]
+      email = "your@email.address"
+      storage = "domains/acme.json"
+      caServer = "https://acme-v02.api.letsencrypt.org/directory"
+      [certificatesResolvers.cert.acme.tlsChallenge]
+        [certificatesResolvers.cert.acme.httpChallenge]
+        # used during the challenge
+        entryPoint = "http"
+
+Good luck!
