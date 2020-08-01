@@ -2,6 +2,8 @@
 
 # Baro Webstack!
 
+Fully automated script for setting up Nginx and PHP proxy /w Traefik Support. Reusable, if envs are changed
+
 # Installation
     ./setup.sh -f ~/docker
 For more options run
