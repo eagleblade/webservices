@@ -24,4 +24,5 @@ RUN wget https://get.symfony.com/cli/installer -O - | bash
 USER root
 RUN mv /home/debian/.symfony/bin/symfony /usr/local/bin/symfony
 USER $USER
+WORKDIR /app
 CMD ["php-fpm"]

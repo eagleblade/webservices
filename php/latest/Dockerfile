@@ -16,4 +16,5 @@ ENV PS1="\u@\h:\w\\$ "
  
 RUN apk add --no-cache bash
 USER $USER
+WORKDIR /app
 CMD ["php-fpm"]
