@@ -1,10 +1,12 @@
 FROM php:7.4.7-fpm-alpine3.12
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN apk update && apk add --no-cache bash
-RUN wget https://get.symfony.com/cli/installer -O - | bash
+
 ENV UID=1000
 ENV GID=1000
 ENV USER=debian
+
+# install Bash, composer and symfony
+RUN apk update && apk add --no-cache bash git
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 RUN addgroup --gid "$GID" "$USER" \
     && adduser \
@@ -16,7 +18,10 @@ RUN addgroup --gid "$GID" "$USER" \
     "$USER"
 
 ENV PS1="\u@\h:\w\\$ "
- 
-RUN apk add --no-cache bash
+
+USER $USER
+RUN wget https://get.symfony.com/cli/installer -O - | bash
+USER root
+RUN mv /home/debian/.symfony/bin/symfony /usr/local/bin/symfony
 USER $USER
 CMD ["php-fpm"]
